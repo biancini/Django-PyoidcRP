@@ -3,7 +3,7 @@ pyoidc_rp_django
 
 Django module that includes pyoidc relying party code into a Django application.
 To install this example:
- * copy the ``django_rp`` folder into /var/www
+ * copy the ``django_rp`` folder into ``/var/www``
  * configure apache adding the following line to the default webserver
    ```
    WSGIPassAuthorization On
