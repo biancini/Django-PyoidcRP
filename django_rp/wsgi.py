@@ -5,11 +5,11 @@ path = "/var/www/"
 if path not in sys.path:
     sys.path.append(path)
 
-path = "/var/www/account_linking"
+path = "/var/www/django_rp"
 if path not in sys.path:
     sys.path.append(path)
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "account_linking.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_rp.settings")
 
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()

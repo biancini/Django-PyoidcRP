@@ -14,16 +14,16 @@ MANAGERS = ADMINS
 import os
 BASE_DIR = os.path.dirname(os.path.realpath(__file__)) 
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-#        'NAME': 'nss_access',                 # Or path to database file if using sqlite3.
-#        'USER': 'nss_db',                     # Not used with sqlite3.
-#        'PASSWORD': 'ciaonss',                # Not used with sqlite3.
-#        'HOST': '',                           # Set to empty string for localhost. Not used with sqlite3.
-#        'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
-#    }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',   # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'django',                       # Or path to database file if using sqlite3.
+        'USER': 'django',                       # Not used with sqlite3.
+        'PASSWORD': 'ciaodjango',               # Not used with sqlite3.
+        'HOST': 'localhost',                    # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '3306',                         # Set to empty string for default. Not used with sqlite3.
+    }
+}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#allowed-hosts
@@ -88,7 +88,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -98,7 +97,6 @@ SECRET_KEY = '9uqo5d00h-l0a45!a6fq*e$y+lxw3&^34-#%18z4ci5^s1t3=o'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -106,7 +104,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.RemoteUserMiddleware',
+    'oidc.middleware.OpenIdMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'djangomako.middleware.MakoMiddleware',
 )
@@ -115,7 +113,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'django.contrib.auth.backends.RemoteUserBackend',
+    'oidc.backends.OpenIdUserBackend',
 )
 
 SHIBBOLETH_ATTRIBUTE_MAP = {
@@ -126,8 +124,9 @@ SHIBBOLETH_ATTRIBUTE_MAP = {
 }
 
 #LOGIN_URL = '/Shibboleth.sso/Login'
+LOGIN_URL = '/openid'
 
-ROOT_URLCONF = 'account_linking.urls'
+ROOT_URLCONF = 'django_rp.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
