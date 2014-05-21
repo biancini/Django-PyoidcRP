@@ -11,5 +11,15 @@ if path not in sys.path:
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_rp.settings")
 
-import django.core.handlers.wsgi
-application = django.core.handlers.wsgi.WSGIHandler()
+from oidc_django import oidc, conf
+from django.core.handlers.wsgi import WSGIHandler
+_application = WSGIHandler()
+
+global OIDC_CLIENTS
+OIDC_CLIENTS = oidc.OIDCClients(conf)
+
+def application(environ, start_response):
+    global OIDC_CLIENTS
+    environ['OIDC_CLIENTS'] = OIDC_CLIENTS
+
+    return _application(environ, start_response)

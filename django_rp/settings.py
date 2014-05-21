@@ -1,4 +1,5 @@
 # Django settings for access_web project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,7 +12,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-import os
 BASE_DIR = os.path.dirname(os.path.realpath(__file__)) 
 
 DATABASES = {
@@ -104,26 +104,26 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'oidc.middleware.OpenIdMiddleware',
+    'oidc_django.middleware.OpenIdMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'djangomako.middleware.MakoMiddleware',
 )
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+#SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+#SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+#CACHES = {
+#    'default': {
+#        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#    }
+#}
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'oidc.backends.OpenIdUserBackend',
+    'oidc_django.backends.OpenIdUserBackend',
 )
 
-SHIBBOLETH_ATTRIBUTE_MAP = {
-   #"eppn": (True, "username"), #Valore username impostato dalla variabile REMOTE_USER
-   "givenName": (True, "first_name"),
-   "sn": (True, "last_name"),
-   "mail": (True, "email"),
-}
-
-#LOGIN_URL = '/Shibboleth.sso/Login'
 LOGIN_URL = '/openid'
 
 ROOT_URLCONF = 'django_rp.urls'
@@ -156,17 +156,59 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         }
     },
     'loggers': {
+        'django': {
+            'handlers': ['null'],
+            'propagate': True,
+            'level': 'INFO',
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },
+        'oic.utils.webfinger': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'oic.utils.keyio': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'oic.oauth2.message': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+	},
+        'oidc_django.oidc': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+	},
     }
 }

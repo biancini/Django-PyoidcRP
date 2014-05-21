@@ -10,10 +10,10 @@ BASEDIR = path.dirname(path.abspath(__file__))
 
 urlpatterns = patterns('',
     # URLS for OpenId authentication
-    url(r'^openid$', 'django_rp.oidc.views.openid', name='openid'),
-    url(r'^rp$', 'django_rp.oidc.views.rp', name='rp'),
-    url(r'^authz_cb$', 'django_rp.oidc.views.authz_cb', name='authz_cb'),
-    url(r'^logout$', 'django_rp.oidc.views.logout', name='logout'),
+    url(r'^openid$', 'django_rp.oidc_django.views.openid', name='openid'),
+    url(r'^rp$', 'django_rp.oidc_django.views.rp', name='rp'),
+    url(r'^authz_cb$', 'django_rp.oidc_django.views.authz_cb', name='authz_cb'),
+    url(r'^logout$', 'django_rp.oidc_django.views.logout', name='logout'),
 
     url(r'^$', 'django_rp.views.home', name='home'),
 

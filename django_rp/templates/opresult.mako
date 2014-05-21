@@ -31,7 +31,7 @@
 
       for key, value in userinfo.items():
           element += "<div class='row'>"
-          element += "<div class='col-md-3'>" +  escape(unicode(key).encode("utf-8")) + "</div>"
+          element += "<div class='col-md-3'>" + escape(unicode(key).encode("utf-8")) + "</div>"
           element += "<div class='col-md-7'>" + escape(unicode(value).encode("utf-8")) + "</div>"
           element += "</div>"
       return element

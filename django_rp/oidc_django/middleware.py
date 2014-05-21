@@ -10,24 +10,12 @@ from django.http import HttpResponse
 from urlparse import parse_qs
 from jwkest.jws import alg2keytype
 from oic.utils.http_util import Redirect
-
 from backends import OpenIdUserBackend
-from oidc import OIDCClients
-import conf
+
+from oidc_django import oidc, conf
+
 import urllib
-
-CLIENTS = OIDCClients(conf)
-
-def get_user(request):
-    if not hasattr(request, '_cached_user'):
-        request._cached_user = auth.get_user(request)
-    return request._cached_user
-
-class AuthenticationMiddleware(object):
-    def process_request(self, request):
-        assert hasattr(request, 'session'), "The Django authentication middleware requires session middleware to be installed. Edit your MIDDLEWARE_CLASSES setting to insert 'django.contrib.sessions.middleware.SessionMiddleware'."
-
-        request.user = SimpleLazyObject(lambda: get_user(request))
+import threading
 
 class OpenIdMiddleware(object):
     """
@@ -49,12 +37,15 @@ class OpenIdMiddleware(object):
                 " 'django.contrib.auth.middleware.AuthenticationMiddleware'"
                 " before the OpenIdUserMiddleware class.")
 
+        # If the user is already authenticated and that user is the user we are
+        # getting passed in the headers, then the correct user is already
+        # persisted in the session and we don't need to continue.
+        if request.user.is_authenticated():
+	    return
+
         try:
-            client = CLIENTS[request.session["op"]]
-            query = parse_qs(request.session['query'])
-            userinfo = client.callback(query)
-            request.session['userinfo'] = userinfo
-        except:
+            userinfo = request.session['userinfo']
+        except Exception, e:
             # If specified header doesn't exist then remove any existing
             # authenticated remote-user, or return (leaving request.user set to
             # AnonymousUser by the AuthenticationMiddleware).
@@ -67,21 +58,15 @@ class OpenIdMiddleware(object):
                 except ImproperlyConfigured as e:
                     # backend failed to load
                     auth.logout(request)
-            return
-        # If the user is already authenticated and that user is the user we are
-        # getting passed in the headers, then the correct user is already
-        # persisted in the session and we don't need to continue.
-        if request.user.is_authenticated():
-            if request.user.get_username() == self.clean_username(username, request):
-                return
-        # We are seeing this user for the first time in this session, attempt
-        # to authenticate the user.
-        user = auth.authenticate(userinfo=userinfo)
-        if user:
-            # User is valid.  Set request.user and persist user in the session
-            # by logging the user in.
-            request.user = user
-            auth.login(request, user)
+        else:
+            # We are seeing this user for the first time in this session, attempt
+            # to authenticate the user.
+            user = auth.authenticate(userinfo=userinfo)
+            if user:
+                # User is valid.  Set request.user and persist user in the session
+                # by logging the user in.
+                request.user = user
+                auth.login(request, user)
 
     def clean_username(self, username, request):
         """
