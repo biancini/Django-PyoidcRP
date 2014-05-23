@@ -13,15 +13,15 @@ To install this example:
 
    mkdir /opt/projects ; yaisLinux.sh /opt/projects
 
-	- Do you want to install IdProxy (Y/n):		n 
-	- Do you want to install Social2Saml (Y/n):	n
-	- Do you want to install verify_entcat (Y/n):	n 
-	- Do you want to install dirg-web (Y/n):	n 
-	- Do you want to install saml2test (Y/n):	n 
-	- Do you want to install pyoidc (Y/n):		Y 
-	- Do you want to install pysaml2 (Y/n):		n 
-	- Do you want to install oictest (Y/n):		n 
-	- Do you want to install oictestGui (Y/n):	n
+	- Do you want to install IdProxy (Y/n):         n 
+	- Do you want to install Social2Saml (Y/n):     n
+	- Do you want to install verify_entcat (Y/n):   n 
+	- Do you want to install dirg-web (Y/n):        n 
+	- Do you want to install saml2test (Y/n):       n 
+	- Do you want to install pyoidc (Y/n):          Y 
+	- Do you want to install pysaml2 (Y/n):         n 
+	- Do you want to install oictest (Y/n):         n 
+	- Do you want to install oictestGui (Y/n):      n
 
   sudo pip install pycrypto==2.6.1 ; easy_install pycrypto
 
@@ -36,10 +36,10 @@ To install this example:
   baseurl = "https://<YOUR.VM.FQDN>"
   # Use the default key or change with another one.
   keys = { 
-    	"RSA": {
-  	  "key": "cp_keys/key.pem",
-	  "usage": ["enc", "sig"]			
-	}
+        "RSA": {
+            "key": "cp_keys/key.pem",
+            "usage": ["enc", "sig"]			
+        }
   }
 
   # Modify this if you want host your OpenID Provider on HTTPS 
@@ -96,14 +96,14 @@ To install this example:
   ....
 
   CLIENTS = {
-   	# The ones that support webfinger, OP discovery and client registration
-	# This is the default, any client that is not listed here is expected to
-        # support dynamic discovery and registration.
-	"": {
-       		"client_info": ME,
-       		"behaviour": BEHAVIOUR
-	},
-	#### REMOVE ANY OTHER CLIENTS ####
+      # The ones that support webfinger, OP discovery and client registration
+      # This is the default, any client that is not listed here is expected to
+      # support dynamic discovery and registration.
+      "": {
+          "client_info": ME,
+          "behaviour": BEHAVIOUR
+      },
+      #### REMOVE ANY OTHER CLIENTS ####
   }
   ----------------------------------------------------------------------
   ```
