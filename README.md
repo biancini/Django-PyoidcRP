@@ -1,5 +1,5 @@
-pyoidc_rp_django
-================
+Django pyoidc integration
+=========================
 
 Django module that includes pyoidc relying party code into a Django application.
 To install this example:
