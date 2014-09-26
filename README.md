@@ -1,5 +1,5 @@
-pyoidc_rp_django
-================
+Django pyoidc integration
+=========================
 
 Django module that includes pyoidc relying party code into a Django application.
 To install this example:
@@ -71,7 +71,7 @@ To install this example:
 
 * Retrieve the code of django_rp from the GitHub Repository:
   ```
-  cd /tmp ; git clone https://github.com/biancini/pyoidc_rp_django.git
+  cd /tmp ; git clone https://github.com/biancini/Django-PyoidcRP.git django_rp
   ```
 
 * Copy the directory “django_rp” into “/var/www”:
