@@ -12,6 +12,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+BASE_ROOT = ""
+
 BASE_DIR = os.path.dirname(os.path.realpath(__file__)) 
 
 DATABASES = {
@@ -69,12 +71,12 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = '%s/static/' % BASE_ROOT
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = '%s/static/admin/' % BASE_ROOT
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -124,7 +126,7 @@ AUTHENTICATION_BACKENDS = (
     'oidc_django.backends.OpenIdUserBackend',
 )
 
-LOGIN_URL = '/openid'
+LOGIN_URL = '%s/openid' % BASE_ROOT
 
 ROOT_URLCONF = 'django_rp.urls'
 

@@ -1,5 +1,7 @@
+from django.conf import settings
+
 PORT = 443
-BASE = "https://localhost:" + str(PORT) + "/"
+BASE = "https://localhost:%s/%s" % (PORT, settings.BASE_ROOT) + "/"
 
 # If BASE is https these has to be specified
 SERVER_KEY = ''
